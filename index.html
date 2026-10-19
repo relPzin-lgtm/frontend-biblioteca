@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#172554">
+  <meta name="description" content="Painel profissional para gerenciamento de acervo de livros.">
+  <title>Acervo — Biblioteca Digital</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#" aria-label="Biblioteca Digital, início">
+        <span class="brand-mark">
+          <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M5 7.5c4.1-1.8 7.7-1.1 11 1.4v17c-3.3-2.5-6.9-3.2-11-1.4z"/><path d="M27 7.5c-4.1-1.8-7.7-1.1-11 1.4v17c3.3-2.5 6.9-3.2 11-1.4z"/><path d="M16 9v17"/></svg>
+        </span>
+        <span class="brand-copy"><strong>Biblioteca</strong><small>DIGITAL</small></span>
+      </a>
+
+      <div class="workspace-label">ESPAÇO DE TRABALHO</div>
+      <nav class="nav-menu" aria-label="Navegação principal">
+        <a class="nav-link active" href="#dashboard" data-view="dashboard">
+          <span class="nav-icon">▦</span><span>Visão geral</span>
+        </a>
+        <a class="nav-link" href="#catalogo" data-view="catalogo">
+          <span class="nav-icon">▤</span><span>Acervo de livros</span><span class="nav-count" id="sidebarBookCount">—</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <div class="sidebar-note">
+          <span class="note-icon">✦</span>
+          <strong>Conhecimento em cada página.</strong>
+          <p>Organize seu acervo com clareza e praticidade.</p>
+        </div>
+        <button class="nav-link settings-link" id="openSettings" type="button">
+          <span class="nav-icon">⚙</span><span>Configurações da API</span>
+        </button>
+        <div class="profile">
+          <div class="avatar">BD</div>
+          <div class="profile-copy"><strong>Biblioteca</strong><small>Administrador do acervo</small></div>
+          <span class="profile-dot" title="Interface local"></span>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="icon-button mobile-menu" id="mobileMenu" type="button" aria-label="Abrir menu">☰</button>
+          <div class="breadcrumb"><span>Biblioteca</span><span class="crumb-separator">/</span><strong id="breadcrumbCurrent">Visão geral</strong></div>
+        </div>
+        <div class="topbar-actions">
+          <div class="connection-pill" id="connectionPill"><span class="status-dot"></span><span id="connectionText">Conectando à API</span></div>
+          <button class="icon-button" id="refreshButton" type="button" aria-label="Atualizar acervo" title="Atualizar acervo">↻</button>
+          <div class="top-avatar">BD</div>
+        </div>
+      </header>
+
+      <section class="page-view" id="dashboardView">
+        <div class="page-heading">
+          <div>
+            <div class="eyebrow"><span class="eyebrow-line"></span> PAINEL DO ACERVO</div>
+            <h1>Seu conhecimento,<br class="heading-break"> bem organizado<span class="heading-period">.</span></h1>
+            <p class="page-subtitle">Acompanhe e gerencie todos os livros da sua biblioteca em um só lugar.</p>
+          </div>
+          <button class="button button-primary" id="newBookButton" type="button"><span class="button-plus">＋</span> Cadastrar livro</button>
+        </div>
+
+        <div class="stats-grid">
+          <article class="stat-card stat-primary">
+            <div class="stat-top"><span class="stat-label">Livros cadastrados</span><span class="stat-icon">▤</span></div>
+            <div class="stat-value" id="totalBooks">—</div>
+            <div class="stat-foot"><span class="stat-foot-mark">↗</span> <span>Registros no acervo</span></div>
+            <div class="stat-decoration"></div>
+          </article>
+          <article class="stat-card">
+            <div class="stat-top"><span class="stat-label">Autores distintos</span><span class="stat-icon soft-purple">✎</span></div>
+            <div class="stat-value" id="totalAuthors">—</div>
+            <div class="stat-foot"><span>Autores representados na coleção</span></div>
+          </article>
+          <article class="stat-card">
+            <div class="stat-top"><span class="stat-label">Com ano informado</span><span class="stat-icon soft-green">◷</span></div>
+            <div class="stat-value" id="totalDated">—</div>
+            <div class="stat-foot"><span>Livros com ano de publicação</span></div>
+          </article>
+        </div>
+
+        <section class="content-panel">
+          <div class="panel-heading">
+            <div><h2>Adicionados recentemente</h2><p>Uma visão rápida dos últimos registros do seu acervo.</p></div>
+            <button class="text-button" type="button" data-go-catalog>Ver todo o acervo <span>→</span></button>
+          </div>
+          <div class="recent-list" id="recentBooks">
+            <div class="loading-state"><span class="loader"></span> Carregando livros...</div>
+          </div>
+        </section>
+
+        <section class="bottom-banner">
+          <div class="banner-symbol">✧</div>
+          <div><strong>Uma biblioteca organizada começa aqui.</strong><p>Cadastre, encontre e mantenha seus registros sempre atualizados.</p></div>
+          <button class="button button-light" id="bannerNewBook" type="button">Adicionar primeiro livro <span>→</span></button>
+        </section>
+      </section>
+
+      <section class="page-view hidden" id="catalogView">
+        <div class="page-heading catalog-heading">
+          <div>
+            <div class="eyebrow"><span class="eyebrow-line"></span> COLEÇÃO COMPLETA</div>
+            <h1>Acervo de livros<span class="heading-period">.</span></h1>
+            <p class="page-subtitle">Pesquise, consulte e mantenha os registros da sua biblioteca atualizados.</p>
+          </div>
+          <button class="button button-primary" id="catalogNewBook" type="button"><span class="button-plus">＋</span> Cadastrar livro</button>
+        </div>
+
+        <section class="content-panel catalog-panel">
+          <div class="catalog-toolbar">
+            <div class="search-wrap">
+              <span class="search-symbol">⌕</span>
+              <input id="searchInput" type="search" placeholder="Buscar por título, autor ou código..." autocomplete="off" aria-label="Buscar livros">
+              <kbd>⌘ K</kbd>
+            </div>
+            <div class="toolbar-right"><span class="results-count" id="resultsCount">0 livros</span><button class="icon-button bordered" id="catalogRefresh" type="button" title="Atualizar lista" aria-label="Atualizar lista">↻</button></div>
+          </div>
+          <div class="table-scroll">
+            <table class="books-table">
+              <thead><tr><th>OBRA</th><th>CÓDIGO</th><th>ANO</th><th class="actions-heading">AÇÕES</th></tr></thead>
+              <tbody id="booksTableBody"><tr><td colspan="4"><div class="loading-state"><span class="loader"></span> Carregando acervo...</div></td></tr></tbody>
+            </table>
+          </div>
+          <div class="empty-state hidden" id="emptyState">
+            <div class="empty-illustration">▤</div><h3 id="emptyTitle">Nenhum livro encontrado</h3><p id="emptyMessage">Tente ajustar a busca ou cadastre uma nova obra.</p>
+            <button class="button button-primary" id="emptyAddButton" type="button">＋ Cadastrar livro</button>
+          </div>
+          <div class="table-footer"><span id="tableFooterText">Exibindo registros do acervo</span><span class="footer-mark"><span class="status-dot"></span> Dados sincronizados com a API</span></div>
+        </section>
+      </section>
+
+      <footer class="app-footer"><span>© <span id="currentYear"></span> Biblioteca Digital</span><span>Feito para valorizar o conhecimento.</span></footer>
+    </main>
+  </div>
+
+  <div class="toast-region" id="toastRegion" aria-live="polite" aria-atomic="true"></div>
+
+  <div class="modal-backdrop hidden" id="bookModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-card">
+      <div class="modal-header"><div><div class="eyebrow"><span class="eyebrow-line"></span> ACERVO</div><h2 id="modalTitle">Cadastrar livro</h2><p id="modalDescription">Preencha os dados para adicionar uma nova obra.</p></div><button class="icon-button modal-close" id="closeBookModal" type="button" aria-label="Fechar">×</button></div>
+      <form id="bookForm">
+        <div class="form-field"><label for="bookTitle">Título do livro <span>*</span></label><input id="bookTitle" name="titulo" maxlength="180" placeholder="Ex.: O Pequeno Príncipe" required></div>
+        <div class="form-field"><label for="bookAuthor">Autor <span>*</span></label><input id="bookAuthor" name="autor" maxlength="120" placeholder="Ex.: Antoine de Saint-Exupéry" required></div>
+        <div class="form-field"><label for="bookYear">Ano de publicação <small>opcional</small></label><input id="bookYear" name="ano" type="number" min="0" max="2200" placeholder="Ex.: 1943"></div>
+        <div class="form-error hidden" id="formError"></div>
+        <div class="modal-actions"><button class="button button-quiet" id="cancelBook" type="button">Cancelar</button><button class="button button-primary" id="saveBookButton" type="submit"><span class="button-plus">＋</span> Salvar livro</button></div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-backdrop hidden" id="deleteModal" role="dialog" aria-modal="true" aria-labelledby="deleteTitle">
+    <div class="modal-card modal-card-small">
+      <div class="delete-icon">!</div><h2 id="deleteTitle">Excluir este livro?</h2><p id="deleteDescription">Esta ação não pode ser desfeita. O registro será removido do acervo.</p>
+      <div class="modal-actions"><button class="button button-quiet" id="cancelDelete" type="button">Cancelar</button><button class="button button-danger" id="confirmDelete" type="button">Excluir livro</button></div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop hidden" id="settingsModal" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+    <div class="modal-card">
+      <div class="modal-header"><div><div class="eyebrow"><span class="eyebrow-line"></span> CONEXÃO</div><h2 id="settingsTitle">Configurações da API</h2><p>Informe a URL base do seu backend no Cloudflare Workers.</p></div><button class="icon-button modal-close" id="closeSettings" type="button" aria-label="Fechar">×</button></div>
+      <form id="settingsForm">
+        <div class="form-field"><label for="apiUrl">URL base da API</label><input id="apiUrl" type="url" placeholder="https://seu-worker.workers.dev" required><small class="field-help">Não inclua <code>/api/livros</code> no final. O frontend adiciona as rotas automaticamente.</small></div>
+        <div class="settings-tip"><strong>Importante</strong><p>Como o frontend e a API podem estar em domínios diferentes, o backend precisa permitir CORS para o domínio do Cloudflare Pages.</p></div>
+        <div class="modal-actions"><button class="button button-quiet" id="cancelSettings" type="button">Cancelar</button><button class="button button-primary" type="submit">Salvar e conectar</button></div>
+      </form>
+    </div>
+  </div>
+</body>
+</html>
