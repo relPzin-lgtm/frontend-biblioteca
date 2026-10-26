@@ -2,7 +2,7 @@
   "use strict";
 
   // URL base da API. Pode ser alterada em "Configurações da API".
-  const DEFAULT_API_URL = "https://aula-deploy.agenilsonsales392019.workers.dev";
+  const DEFAULT_API_URL = "https://github.com/relPzin-lgtm/aula-deploy";
   const API_STORAGE_KEY = "bibliotecaDigitalApiUrl";
 
   const $ = (selector) => document.querySelector(selector);
